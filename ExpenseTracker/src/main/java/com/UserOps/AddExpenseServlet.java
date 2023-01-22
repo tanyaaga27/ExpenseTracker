@@ -28,16 +28,21 @@ public class AddExpenseServlet extends HttpServlet {
 		String amount = req.getParameter("amount");
 		String category = req.getParameter("category");
 		String stringdate = req.getParameter("date");
+		//out.println("User input Date="+stringdate);
 		Date date;
 		try {
 			date = new SimpleDateFormat("yyyy-MM-dd").parse(stringdate);
-			
+			/*out.println("String to Date="+date);
+			Timestamp.of(date);
+			out.println("date to timestamp="+Timestamp.of(date));*/
 			Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 			KeyFactory keyFactory = datastore.newKeyFactory().setKind("expense");
 			Key key = keyFactory.newKey(title);
 			Entity entity = Entity.newBuilder(key).set("title",title).set("amount",amount).set("category",category).set("expenseDate", Timestamp.of(date)).build();
 			datastore.put(entity);
+			out.println("Entry added Successfully!");
 			out.println(Timestamp.of(date));
+			
 		
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -45,12 +50,6 @@ public class AddExpenseServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		/*Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-		KeyFactory keyFactory = datastore.newKeyFactory().setKind("expense");
-		Key key = keyFactory.newKey(title);
-		Entity entity = Entity.newBuilder(key).set("title",title).set("amount",amount).set("category",category).set("expenseDate", Timestamp.now()).build();
-		
-		*/
 	
 		
 		
